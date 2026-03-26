@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TERMINAL ACCESS | SECURED_GATEWAY</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #000000;
+            --main-green: #00ff41; /* Hijau Matrix Asli */
+            --dim-green: #003300;
+            --neon-glow: 0 0 10px rgba(0, 255, 65, 0.7), 0 0 20px rgba(0, 255, 65, 0.5);
+            --font-terminal: 'Fira Code', monospace;
+            --font-pixel: 'Press Start 2P', cursive;
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--main-green);
+            font-family: var(--font-terminal);
+            overflow: hidden; /* Mencegah scroll karena efek matrix */
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        /* --- Efek Hujan Matrix (Background) --- */
+        #matrix-canvas {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            opacity: 0.15; /* Dibuat samar agar teks utama terbaca */
+        }
+
+        /* --- Kontainer Utama Terminal --- */
+        .terminal-window {
+            background: rgba(0, 10, 0, 0.85);
+            border: 2px solid var(--main-green);
+            border-radius: 5px;
+            width: 90%; max-width: 800px;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.2);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Bar bagian atas terminal */
+        .terminal-header {
+            position: absolute; top: 0; left: 0; width: 100%;
+            background: var(--dim-green);
+            border-bottom: 2px solid var(--main-green);
+            height: 25px; display: flex; align-items: center; padding: 0 10px;
+            font-family: var(--font-pixel); font-size: 0.6rem; color: #fff;
+        }
+        .header-dots { display: flex; gap: 6px; margin-right: 15px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .red { background: #ff5f56; } .yellow { background: #ffbd2e; } .green { background: #27c93f; }
+
+        /* Teks Utama */
+        h1.glitch {
+            font-family: var(--font-pixel);
+            font-size: 1.8rem; text-transform: uppercase;
+            text-align: center; margin-top: 20px;
+            text-shadow: var(--neon-glow);
+            animation: glitch 2s infinite;
+        }
+
+        .cmd-line { margin: 15px 0; font-size: 1rem; line-height: 1.5; }
+        .cmd-prompt { color: #fff; } /* Warna putih untuk prompt '>' */
+        .cmd-command { color: #ff0; } /* Warna kuning untuk perintah */
+        .cmd-output { color: var(--main-green); opacity: 0.8; }
+
+        /* Kursor Berkedip */
+        .cursor {
+            display: inline-block; width: 10px; height: 1.2rem;
+            background-color: var(--main-green);
+            animation: blink 1s infinite;
+            vertical-align: middle; margin-left: 5px;
+        }
+
+        /* --- Tombol Neon --- */
+        .btn-container { text-align: center; margin-top: 40px; }
+        .btn-cyber {
+            display: inline-block;
+            font-family: var(--font-pixel); font-size: 1rem;
+            color: var(--bg-color); background: var(--main-green);
+            padding: 15px 30px; text-decoration: none;
+            border: 2px solid var(--main-green);
+            border-radius: 0; /* Pixel style */
+            text-transform: uppercase;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+            box-shadow: var(--neon-glow);
+        }
+
+        .btn-cyber:hover {
+            background: var(--bg-color); color: var(--main-green);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 1);
+            transform: scale(1.05);
+        }
+
+        /* Status Error (Merah) */
+        .status-error { color: #f00; font-weight: bold; animation: pulse 1s infinite; }
+
+        /* --- Animasi --- */
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        
+        /* Efek Glitch pada Judul */
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        /* Responsive untuk HP */
+        @media (max-width: 600px) {
+            h1.glitch { font-size: 1.2rem; }
+            .terminal-window { padding: 20px; }
+            .cmd-line { font-size: 0.8rem; }
+            .btn-cyber { font-size: 0.8rem; padding: 12px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="matrix-canvas"></canvas>
+
+    <div class="terminal-window">
+        <div class="terminal-header">
+            <div class="header-dots">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
+            </div>
+            <span>SECURE_SESSION_v7.1</span>
+        </div>
+
+        <h1 class="glitch">> INITIALIZING ACCESS_</h1>
+
+        <div class="cmd-line">
+            <span class="cmd-prompt">root@system:~#</span> <span class="cmd-command">./load_protocol.sh</span>
+        </div>
+        <div class="cmd-line">
+            <span class="cmd-output">[OK] Establishing connection to neural net...</span>
+        </div>
+        <div class="cmd-line">
+            <span class="cmd-output">[OK] Bypassing firewall... (Layer 4/7)</span>
+        </div>
+        <div class="cmd-line">
+            <span class="cmd-output">[OK] Decrypting main server...</span>
+        </div>
+        <div class="cmd-line">
+            <span class="cmd-output">[INFO] Membangun solusi digital tanpa batas. Ahli dalam pengembangan sistem keamanan dan web presisi tinggi.</span>
+        </div>
+        <div class="cmd-line">
+            <span class="cmd-prompt">root@system:~#</span> <span class="cmd-command">status_check</span>
+        </div>
+        <div class="cmd-line">
+            <span class="cmd-output">> CONNECTION:</span> <span class="status-error">UNSTABLE</span>
+        </div>
+        
+        <div class="btn-container">
+            <a href="https://merpatiburung567-debug.github.io/Dea_amanda1/" class="btn-cyber">DI KLIK BANGSAT</a>
+            <span class="cursor"></span>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas full screen
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Karakter Matrix (Katakana + Latin + Angka)
+        const katakana = "アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン";
+        const latin = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        const nums = "01";
+        const alphabet = katakana + latin + nums;
+
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+
+        // Array untuk menyimpan posisi jatuhnya setiap kolom
+        const drops = [];
+        for (let x = 0; x < columns; x++) {
+            drops[x] = 1; // Semua mulai dari atas (y=1)
+        }
+
+        const drawMatrix = () => {
+            // Latar belakang hitam transparan untuk efek trail
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Warna teks hijau matrix
+            ctx.fillStyle = "#0f0"; 
+            ctx.font = fontSize + "px monospace";
+
+            // Menggambar karakter
+            for (let i = 0; i < drops.length; i++) {
+                // Pilih karakter acak
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.alphabet.length));
+                
+                // Gambar karakter di posisi (x, y)
+                // x = indeks kolom * ukuran font, y = posisi drop * ukuran font
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                // Jika drop sudah mencapai bawah layar, reset ke atas acak
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+
+                // Tambah posisi y untuk frame berikutnya
+                drops[i]++;
+            }
+        };
+
+        // Jalankan fungsi draw setiap 33ms (sekitar 30 FPS)
+        setInterval(drawMatrix, 33);
+
+        // Resize canvas jika jendela berubah ukuran
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            // Reset drops agar sesuai dengan jumlah kolom baru
+            const columns = canvas.width / fontSize;
+            drops.length = 0;
+            for (let x = 0; x < columns; x++) {
+                drops[x] = 1;
+            }
+        });
+    </script>
+</body>
+</html>
